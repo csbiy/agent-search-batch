@@ -7,28 +7,33 @@ spring:
   batch:
     jdbc:
       initialize-schema: always
+    job:
+      enabled: false
   jpa:
     database: mysql
     hibernate:
       ddl-auto: create
     show-sql: true
-
-military:
-  industry:
-    url: https://work.mma.go.kr/caisBYIS/search/byjjecgeomsaek.do?eopjong_gbcd_yn=1&eopjong_gbcd=1&menu_id=m_m6_1
-    filter-check-btn:
-      - "#eopjong_cd12"
-      - "#eopjong_cd14"
-      - "#eopjong_cd13"
-      - "#eopjong_cd15"
-    filter-submit-btn: .icon_search a
-    excel-download-btn: .icon_print a
-  excel-file-name: 병역지정업체검색_%s.xls
-  excel-file-date-format: yyyyMMdd
-
 crawling:
   driver-path: src\main\resources\chromedriver-win64\chromedriver.exe
   download-directory: C:\Users\User\Desktop\search-batch\src\main\resources\crawling_result
   waiting-time: 5
   chrome-options:
     - --headless=chrome
+    - --user-agent=Mozilla/5.0
+
+  military:
+    industry:
+      url: https://work.mma.go.kr/caisBYIS/search/byjjecgeomsaek.do?eopjong_gbcd_yn=1&eopjong_gbcd=1&menu_id=m_m6_1
+      filter-check-btn:
+        - "#eopjong_cd12"
+        - "#eopjong_cd14"
+        - "#eopjong_cd13"
+        - "#eopjong_cd15"
+      filter-submit-btn: .icon_search a
+      excel-download-btn: .icon_print a
+    excel-file-name: 병역지정업체검색_%s.xls
+    excel-file-date-format: yyyyMMdd
+
+  wanted:
+    url: https://www.wanted.co.kr/wdlist?country=kr&job_sort=job.latest_order&years=-1&locations=all

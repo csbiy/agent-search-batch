@@ -1,4 +1,4 @@
-package agent.search;
+package agent.search.jobs;
 
 import agent.search.crawling.GovCrawlingService;
 import agent.search.entity.MilitaryCompany;
@@ -17,6 +17,7 @@ import org.springframework.batch.extensions.excel.RowMapper;
 import org.springframework.batch.extensions.excel.poi.PoiItemReader;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,30 +28,30 @@ import java.util.Map;
 
 @Configuration
 @RequiredArgsConstructor
-public class JobConfiguration {
+public class MilitaryCompanyCrawlJob {
 
-    @Bean
-    public Job militaryCompanyCrawlJob(JobRepository jobRepository, Step step,
-                                       GovCrawlingService crawlingService,
-                                       DailyExcelFileParamIncrementer incrementer
+    private static final String jobName = "MILITARY_COMPANY_CRAWL_JOB";
+    private static final String stepName = "MILITARY_COMPANY_CRAWL_STEP";
+
+    @Bean(name = jobName)
+    public Job job(JobRepository jobRepository,
+                   @Qualifier(value = stepName) Step step,
+                   GovCrawlingService service
     ) {
-        return new JobBuilder("militaryCompanyCrawlJob", jobRepository)
-                .listener(crawlingService)
-                .incrementer(incrementer)
+        return new JobBuilder(jobName, jobRepository)
+                .listener(service)
                 .start(step)
                 .build();
     }
 
-    @Bean
+    @Bean(name = stepName)
     public Step step(JobRepository jobRepository,
                      PlatformTransactionManager transactionManager,
-                     GovCrawlingService service,
                      ItemReader<MilitaryCompany> reader,
                      ItemWriter militaryCompanyWriter
     ) {
-        return new StepBuilder("step", jobRepository)
+        return new StepBuilder(stepName, jobRepository)
                 .chunk(10, transactionManager)
-                .listener(service)
                 .reader(reader)
                 .writer(militaryCompanyWriter)
                 .build();
@@ -80,12 +81,4 @@ public class JobConfiguration {
         };
     }
 
-    @Bean
-    public WebDriver chromeDriver(CrawlingProperties properties) {
-        System.setProperty("webdriver.chrome.driver", properties.getDriverPath());
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments(properties.getChromeOptions());
-        options.setExperimentalOption("prefs", Map.of("download.default_directory", properties.getDownloadDirectory()));
-        return new ChromeDriver(options);
-    }
 }

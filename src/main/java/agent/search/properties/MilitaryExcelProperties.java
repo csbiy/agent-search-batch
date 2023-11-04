@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "military")
+@ConfigurationProperties(prefix = "crawling.military")
 public class MilitaryExcelProperties {
 
     private String excelFileName;

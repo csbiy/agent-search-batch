@@ -4,6 +4,7 @@ import agent.search.entity.MilitaryCompany;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -11,4 +12,6 @@ import java.util.Optional;
 public interface MilitaryCompanyRepository extends JpaRepository<MilitaryCompany,Long> {
 
     Optional<MilitaryCompany> findByName(String name);
+
+    List<MilitaryCompany> findByNameContaining(String name);
 }

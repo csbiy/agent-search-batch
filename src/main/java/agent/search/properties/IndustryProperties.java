@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "military.industry")
+@ConfigurationProperties(prefix = "crawling.military.industry")
 public class IndustryProperties {
 
     private String url;
