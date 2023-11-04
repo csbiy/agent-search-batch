@@ -1,7 +1,7 @@
 package agent.search;
 
 import agent.search.crawling.GovCrawlingService;
-import agent.search.dto.MilitaryCompany;
+import agent.search.entity.MilitaryCompany;
 import agent.search.properties.CrawlingProperties;
 import lombok.RequiredArgsConstructor;
 import org.openqa.selenium.WebDriver;
@@ -16,10 +16,10 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.extensions.excel.RowMapper;
 import org.springframework.batch.extensions.excel.poi.PoiItemReader;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -44,14 +44,15 @@ public class JobConfiguration {
     @Bean
     public Step step(JobRepository jobRepository,
                      PlatformTransactionManager transactionManager,
-                     GovCrawlingService crawlingService,
-                     ItemReader<MilitaryCompany> excelReader
+                     GovCrawlingService service,
+                     ItemReader<MilitaryCompany> reader,
+                     ItemWriter militaryCompanyWriter
     ) {
         return new StepBuilder("step", jobRepository)
                 .chunk(10, transactionManager)
-                .listener(crawlingService)
-                .reader(excelReader)
-                .writer(System.out::println)
+                .listener(service)
+                .reader(reader)
+                .writer(militaryCompanyWriter)
                 .build();
     }
 
