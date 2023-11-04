@@ -1,12 +1,9 @@
 package agent.search.jobs;
 
-import agent.search.crawling.GovCrawlingService;
+import agent.search.crawling.MilitaryCompanyCrawlingService;
 import agent.search.entity.MilitaryCompany;
 import agent.search.properties.CrawlingProperties;
 import lombok.RequiredArgsConstructor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -21,10 +18,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.transaction.PlatformTransactionManager;
-
-import java.util.Map;
 
 @Configuration
 @RequiredArgsConstructor
@@ -34,9 +30,10 @@ public class MilitaryCompanyCrawlJob {
     private static final String stepName = "MILITARY_COMPANY_CRAWL_STEP";
 
     @Bean(name = jobName)
+    @Order(value = 1)
     public Job job(JobRepository jobRepository,
                    @Qualifier(value = stepName) Step step,
-                   GovCrawlingService service
+                   MilitaryCompanyCrawlingService service
     ) {
         return new JobBuilder(jobName, jobRepository)
                 .listener(service)

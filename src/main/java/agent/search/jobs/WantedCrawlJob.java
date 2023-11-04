@@ -1,23 +1,17 @@
 package agent.search.jobs;
 
-import agent.search.crawling.GovCrawlingService;
 import agent.search.crawling.WantedCrawlingService;
-import agent.search.entity.MilitaryCompany;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
-import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
@@ -28,6 +22,7 @@ public class WantedCrawlJob {
     private static final String stepName = "WANTED_CRAWL_STEP";
 
     @Bean(name = jobName)
+    @Order(value = 2)
     public Job job(JobRepository jobRepository,
                    @Qualifier(value = stepName) Step wantedCrawlJob,
                    WantedCrawlingService crawlingService

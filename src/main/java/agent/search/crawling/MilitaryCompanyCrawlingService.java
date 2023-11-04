@@ -4,7 +4,6 @@ import agent.search.properties.CrawlingProperties;
 import agent.search.properties.IndustryProperties;
 import agent.search.properties.MilitaryExcelProperties;
 import lombok.RequiredArgsConstructor;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.batch.core.JobExecution;
@@ -16,10 +15,12 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.time.Duration;
 
+import static org.openqa.selenium.By.*;
+
 @Component
 @RequiredArgsConstructor
 @JobScope
-public class GovCrawlingService implements JobExecutionListener {
+public class MilitaryCompanyCrawlingService implements JobExecutionListener {
 
     private final WebDriver driver;
 
@@ -43,14 +44,14 @@ public class GovCrawlingService implements JobExecutionListener {
         }
         driver.get(industryProperties.getUrl());
         industryProperties.getFilterCheckBtn().forEach((cssSelector) ->
-                driver.findElement(By.cssSelector(cssSelector)).click()
+                driver.findElement(cssSelector(cssSelector)).click()
         );
-        driver.findElement(By.cssSelector(industryProperties.getFilterSubmitBtn())).click();
-        driver.findElement(By.cssSelector(industryProperties.getExcelDownloadBtn())).click();
+        driver.findElement(cssSelector(industryProperties.getFilterSubmitBtn())).click();
+        driver.findElement(cssSelector(industryProperties.getExcelDownloadBtn())).click();
 
         new WebDriverWait(driver, Duration.ofMinutes(properties.getWaitingTime()))
                 .until((d) -> crawlingFile.exists());
     }
 
-    
+
 }
