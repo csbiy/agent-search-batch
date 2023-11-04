@@ -43,11 +43,11 @@ public class MilitaryCompanyCrawlingService implements JobExecutionListener {
             return;
         }
         driver.get(industryProperties.getUrl());
-        industryProperties.getFilterCheckBtn().forEach((cssSelector) ->
+        industryProperties.getFilterCheckBtnCss().forEach((cssSelector) ->
                 driver.findElement(cssSelector(cssSelector)).click()
         );
-        driver.findElement(cssSelector(industryProperties.getFilterSubmitBtn())).click();
-        driver.findElement(cssSelector(industryProperties.getExcelDownloadBtn())).click();
+        driver.findElement(cssSelector(industryProperties.getFilterSubmitBtnCss())).click();
+        driver.findElement(cssSelector(industryProperties.getExcelDownloadBtnCss())).click();
 
         new WebDriverWait(driver, Duration.ofMinutes(properties.getWaitingTime()))
                 .until((d) -> crawlingFile.exists());

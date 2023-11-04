@@ -25,15 +25,20 @@ crawling:
   military:
     industry:
       url: https://work.mma.go.kr/caisBYIS/search/byjjecgeomsaek.do?eopjong_gbcd_yn=1&eopjong_gbcd=1&menu_id=m_m6_1
-      filter-check-btn:
+      filter-check-btn-css:
         - "#eopjong_cd12"
         - "#eopjong_cd14"
         - "#eopjong_cd13"
         - "#eopjong_cd15"
-      filter-submit-btn: .icon_search a
-      excel-download-btn: .icon_print a
+      filter-submit-btn-css: .icon_search a
+      excel-download-btn-css: .icon_print a
     excel-file-name: 병역지정업체검색_%s.xls
     excel-file-date-format: yyyyMMdd
 
   wanted:
-    url: https://www.wanted.co.kr/wdlist?country=kr&job_sort=job.latest_order&years=-1&locations=all
+    url: https://www.wanted.co.kr/
+    job-url: https://www.wanted.co.kr/wdlist?country=kr&job_sort=job.latest_order&years=-1&locations=all
+    company-logo-img-tag: header
+    job-detail-link-css: div[data-cy='job-card'] a
+    job-position-css: .job-card-position
+    company-name-css: .job-card-company-name

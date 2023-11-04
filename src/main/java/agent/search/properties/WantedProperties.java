@@ -10,4 +10,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class WantedProperties {
 
     private String url;
+
+    private String jobUrl;
+
+    private String companyLogoImgTag;
+
+    private String jobDetailLinkCss;
+
+    private String jobPositionCss;
+
+    private String companyNameCss;
 }

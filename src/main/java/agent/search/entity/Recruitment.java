@@ -1,9 +1,6 @@
 package agent.search.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +19,12 @@ public class Recruitment {
 
     private String jobPosition;
 
+    private String originLink;
+
     private String companyName;
 
     private String companyLogoPath;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private MilitaryCompany company;
 }

@@ -13,9 +13,9 @@ public class IndustryProperties {
 
     private String url;
 
-    private List<String> filterCheckBtn;
+    private List<String> filterCheckBtnCss;
 
-    private String filterSubmitBtn;
+    private String filterSubmitBtnCss;
 
-    private String excelDownloadBtn;
+    private String excelDownloadBtnCss;
 }
