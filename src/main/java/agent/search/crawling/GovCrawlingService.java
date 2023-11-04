@@ -1,45 +1,56 @@
 package agent.search.crawling;
 
+import agent.search.properties.CrawlingProperties;
+import agent.search.properties.IndustryProperties;
+import agent.search.properties.MilitaryExcelProperties;
+import lombok.RequiredArgsConstructor;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.batch.core.ItemReadListener;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobExecutionListener;
+import org.springframework.batch.core.configuration.annotation.JobScope;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class GovCrawlingService implements ItemReadListener {
+@Component
+@RequiredArgsConstructor
+@JobScope
+public class GovCrawlingService implements JobExecutionListener {
 
-    public static final String FILE_DIR = "C:\\Users\\User\\Desktop\\search-batch\\src\\main\\resources";
+    private final WebDriver driver;
+
+    private final CrawlingProperties properties;
+
+    private final MilitaryExcelProperties militaryExcelProperties;
+
+    @Value("#{jobParameters['excelFileName']}")
+    public String excelFileName;
 
     @Override
-    public void beforeRead() {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver-win64/chromedriver.exe");
-        Map<String, Object> prefs = new HashMap<>();
+    public void beforeJob(JobExecution jobExecution) {
+        IndustryProperties industryProperties = militaryExcelProperties.getIndustry();
+        String path = new StringBuilder(properties.getDownloadDirectory())
+                .append("\\")
+                .append(excelFileName)
+                .toString();
+        File crawlingFile = new File(path);
+        if (crawlingFile.exists()) {
+            return;
+        }
+        driver.get(industryProperties.getUrl());
+        industryProperties.getFilterCheckBtn().forEach((cssSelector) ->
+                driver.findElement(By.cssSelector(cssSelector)).click()
+        );
+        driver.findElement(By.cssSelector(industryProperties.getFilterSubmitBtn())).click();
+        driver.findElement(By.cssSelector(industryProperties.getExcelDownloadBtn())).click();
 
-        prefs.put("download.default_directory", FILE_DIR);
-
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless=chrome");
-        options.setExperimentalOption("prefs", prefs);
-        WebDriver driver = new ChromeDriver(options);
-        driver.get("https://work.mma.go.kr/caisBYIS/search/byjjecgeomsaek.do?eopjong_gbcd_yn=1&eopjong_gbcd=1&menu_id=m_m6_1");
-
-        List.of(driver.findElement(By.id("eopjong_cd12")),
-                driver.findElement(By.id("eopjong_cd13")),
-                driver.findElement(By.id("eopjong_cd14")),
-                driver.findElement(By.id("eopjong_cd15"))).forEach(WebElement::click);
-        driver.findElement(By.cssSelector(".icon_search")).findElement(By.tagName("a")).click();
-        driver.findElement(By.cssSelector(".icon_print")).findElement(By.tagName("a")).click();
-
-        new WebDriverWait(driver, Duration.ofMinutes(5L))
-                .until((d) -> new File(FILE_DIR + "\\병역지정업체검색_20231104.xls").exists());
+        new WebDriverWait(driver, Duration.ofMinutes(properties.getWaitingTime()))
+                .until((d) -> crawlingFile.exists());
     }
 
+    
 }

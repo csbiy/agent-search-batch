@@ -1,11 +1,13 @@
 package agent.search.dto;
 
-import agent.search.enumeration.MilitaryCompanyExcel;
 import lombok.Builder;
 import lombok.Getter;
-import org.apache.poi.ss.usermodel.Row;
+import lombok.ToString;
+
+import static agent.search.enumeration.MilitaryCompanyExcel.*;
 
 @Getter
+@ToString
 @Builder
 public class MilitaryCompany {
 
@@ -33,22 +35,21 @@ public class MilitaryCompany {
 
     private Integer activeWorkingNum;
 
-    public static MilitaryCompany fromExcelRow(Row row){
-        return builder().name(row.getCell(MilitaryCompanyExcel.COMPANY_NAME.getColumnNumber()).getStringCellValue())
-                .year((int) row.getCell(MilitaryCompanyExcel.CREATE_YEAR.getColumnNumber()).getNumericCellValue())
-                .manageLocation(row.getCell(MilitaryCompanyExcel.GOV.getColumnNumber()).getStringCellValue())
-                .companyLocation(row.getCell(MilitaryCompanyExcel.COMPANY_ADDRESS.getColumnNumber()).getStringCellValue())
-                .companyNumber(row.getCell(MilitaryCompanyExcel.COMPANY_NUMBER.getColumnNumber()).getStringCellValue())
-                .companySize(row.getCell(MilitaryCompanyExcel.COMPANY_SIZE.getColumnNumber()).getStringCellValue())
-                .suppAssignedNum((int) row.getCell(MilitaryCompanyExcel.SUPP_ASSIGN_NUM.getColumnNumber()).getNumericCellValue())
-                .suppEnlistNum((int)row.getCell(MilitaryCompanyExcel.SUPP_ENLIST_NUM.getColumnNumber()).getNumericCellValue())
-                .suppWorkingNum((int)row.getCell(MilitaryCompanyExcel.SUPP_WORK_NUM.getColumnNumber()).getNumericCellValue())
-                .suppAssignedNum((int)row.getCell(MilitaryCompanyExcel.ACTIVE_ASSIGN_NUM.getColumnNumber()).getNumericCellValue())
-                .suppEnlistNum((int)row.getCell(MilitaryCompanyExcel.ACTIVE_ENLIST_NUM.getColumnNumber()).getNumericCellValue())
-                .suppWorkingNum((int)row.getCell(MilitaryCompanyExcel.ACTIVE_WORK_NUM.getColumnNumber()).getNumericCellValue())
+    public static MilitaryCompany fromExcelRow(String[] row) {
+        return builder()
+                .name(cast(row, COMPANY_NAME.getColumnNumber(), String.class))
+                .year(cast(row, CREATE_YEAR.getColumnNumber(), Integer.class))
+                .manageLocation(cast(row, GOV.getColumnNumber(), String.class))
+                .companyLocation(cast(row, COMPANY_ADDRESS.getColumnNumber(), String.class))
+                .companyNumber(cast(row, COMPANY_NUMBER.getColumnNumber(), String.class))
+                .companySize(cast(row, COMPANY_SIZE.getColumnNumber(), String.class))
+                .suppAssignedNum(cast(row, SUPP_ASSIGN_NUM.getColumnNumber(), Integer.class))
+                .suppEnlistNum(cast(row, SUPP_ENLIST_NUM.getColumnNumber(), Integer.class))
+                .suppWorkingNum(cast(row, SUPP_WORK_NUM.getColumnNumber(), Integer.class))
+                .activeAssignedNum(cast(row, ACTIVE_ASSIGN_NUM.getColumnNumber(), Integer.class))
+                .activeEnlistNum(cast(row, ACTIVE_ENLIST_NUM.getColumnNumber(), Integer.class))
+                .activeWorkingNum(cast(row, ACTIVE_WORK_NUM.getColumnNumber(), Integer.class))
                 .build();
-
-
     }
 
 
