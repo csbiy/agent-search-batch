@@ -12,7 +12,7 @@ spring:
   jpa:
     database: mysql
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
 crawling:
   driver-path: src\main\resources\chromedriver-win64\chromedriver.exe

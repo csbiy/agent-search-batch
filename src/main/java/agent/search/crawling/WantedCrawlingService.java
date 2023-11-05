@@ -5,13 +5,12 @@ import agent.search.entity.Recruitment;
 import agent.search.properties.WantedProperties;
 import agent.search.repository.MilitaryCompanyRepository;
 import agent.search.repository.RecruitmentRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.openqa.selenium.*;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobExecutionListener;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -20,14 +19,15 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static org.openqa.selenium.By.*;
+import static org.openqa.selenium.By.cssSelector;
+import static org.openqa.selenium.By.tagName;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class WantedCrawlingService implements Tasklet {
 
-    public static final int SCROLL_DOWN_NUMBER = 20_000;
+    public static final int SCROLL_DOWN_NUMBER = 100_000;
 
     private final WebDriver driver;
 
