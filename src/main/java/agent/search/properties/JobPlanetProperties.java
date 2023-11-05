@@ -13,7 +13,7 @@ public class JobPlanetProperties {
 
     private String queryParameter;
 
-    private String companyDetailLinkCss;
+    private String companyCardCss;
 
     private String companyReviewScoreCss;
 }

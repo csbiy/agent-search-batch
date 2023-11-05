@@ -11,13 +11,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 import static org.openqa.selenium.By.cssSelector;
+import static org.openqa.selenium.By.tagName;
 import static org.springframework.util.StringUtils.hasText;
 
 @Component
@@ -59,18 +63,25 @@ public class JobPlanetCrawlingService implements Tasklet {
     }
 
     private void handle(MilitaryCompany company) {
-        String originLink;
-        String reviewScore;
+        String originLink = null;
+        String reviewScore = null;
         try {
-            originLink = driver.findElement(cssSelector(properties.getCompanyDetailLinkCss())).getAttribute("href");
-            reviewScore = driver.findElement(cssSelector(properties.getCompanyReviewScoreCss())).getText();
+            List<WebElement> foundElements = driver.findElements(cssSelector(properties.getCompanyCardCss()));
+            for (WebElement foundElement : foundElements) {
+                WebElement link = foundElement.findElement(tagName("a"));
+                String companyName = link.getText();
+                if (company.isHighMatchName(companyName)) {
+                    originLink = link.getAttribute("href");
+                    reviewScore = foundElement.findElement(cssSelector(properties.getCompanyReviewScoreCss())).getText();
+                    break;
+                }
+            }
         } catch (NoSuchElementException ex) {
             return;
         }
         if (!hasText(reviewScore) || !hasText(originLink)) {
             return;
         }
-
         JobPlanetCompany jobPlanetCompany = JobPlanetCompany.builder()
                 .company(company)
                 .originLink(originLink)

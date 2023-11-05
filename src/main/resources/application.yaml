@@ -46,5 +46,5 @@ crawling:
   jobplanet:
     url: https://www.jobplanet.co.kr/search
     query-parameter: query
-    company-detail-link-css: .result_card  a
+    company-card-css: .result_card
     company-review-score-css: .rate_ty02
