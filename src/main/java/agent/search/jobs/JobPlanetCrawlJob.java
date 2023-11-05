@@ -1,5 +1,6 @@
 package agent.search.jobs;
 
+import agent.search.crawling.JobPlanetCrawlingService;
 import agent.search.crawling.WantedCrawlingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -15,25 +16,25 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @RequiredArgsConstructor
-public class WantedCrawlJob {
+public class JobPlanetCrawlJob {
 
-    private static final String jobName = "WANTED_CRAWL_JOB";
-    private static final String stepName = "WANTED_CRAWL_STEP";
+    public static final String jobName = "JOBPLANET_CRAWL_JOB";
+    private static final String stepName = "JOBPLANET_CRAWL_STEP";
 
     @Bean(name = jobName)
-    @Order(value = 2)
+    @Order(value = 3)
     public Job job(JobRepository jobRepository,
-                   @Qualifier(value = stepName) Step wantedCrawlStep
+                   @Qualifier(value = stepName) Step jobPlanetCrawlStep
     ) {
         return new JobBuilder(jobName, jobRepository)
-                .start(wantedCrawlStep)
+                .start(jobPlanetCrawlStep)
                 .build();
     }
 
     @Bean(name = stepName)
     public Step step(JobRepository jobRepository,
                      PlatformTransactionManager transactionManager,
-                     WantedCrawlingService tasklet
+                     JobPlanetCrawlingService tasklet
     ) {
         return new StepBuilder(stepName, jobRepository)
                 .tasklet(tasklet, transactionManager)

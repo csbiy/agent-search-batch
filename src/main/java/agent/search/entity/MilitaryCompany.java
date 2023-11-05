@@ -74,4 +74,9 @@ public class MilitaryCompany {
         this.activeEnlistNum = newMilitaryCompany.activeEnlistNum;
         this.activeWorkingNum = newMilitaryCompany.activeWorkingNum;
     }
+
+    public String getPureName(){
+        return name.replace("(주)","")
+                .replace("주식회사","");
+    }
 }

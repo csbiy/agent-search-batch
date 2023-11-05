@@ -1,5 +1,7 @@
 package agent.search;
 
+import agent.search.crawling.JobPlanetCrawlingService;
+import agent.search.jobs.JobPlanetCrawlJob;
 import agent.search.properties.MilitaryExcelProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,9 @@ public class CrawlJobLauncher implements ApplicationRunner {
                 .addString("excelFileName", String.format(properties.getExcelFileName(), getCurrentDate()))
                 .toJobParameters();
         jobs.forEach((job) -> {
+            if (!job.getName().equals(JobPlanetCrawlJob.jobName)){
+                return;
+            }
             try {
                 jobLauncher.run(job, jobParameters);
             } catch (Exception e) {

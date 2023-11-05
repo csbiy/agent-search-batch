@@ -42,3 +42,9 @@ crawling:
     job-detail-link-css: div[data-cy='job-card'] a
     job-position-css: .job-card-position
     company-name-css: .job-card-company-name
+
+  jobplanet:
+    url: https://www.jobplanet.co.kr/search
+    query-parameter: query
+    company-detail-link-css: .result_card  a
+    company-review-score-css: .rate_ty02
