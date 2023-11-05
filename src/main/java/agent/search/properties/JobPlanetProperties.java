@@ -16,4 +16,8 @@ public class JobPlanetProperties {
     private String companyCardCss;
 
     private String companyReviewScoreCss;
+
+    private String companyCategoryCss;
+
+    private String companyCategoryLabel;
 }

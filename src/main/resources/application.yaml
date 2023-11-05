@@ -48,3 +48,5 @@ crawling:
     query-parameter: query
     company-card-css: .result_card
     company-review-score-css: .rate_ty02
+    company-category-css: .tit_sub
+    company-category-label: IT/웹/통신

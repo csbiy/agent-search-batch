@@ -20,8 +20,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static org.openqa.selenium.By.cssSelector;
-import static org.openqa.selenium.By.tagName;
+import static org.openqa.selenium.By.*;
 import static org.springframework.util.StringUtils.hasText;
 
 @Component
@@ -66,13 +65,11 @@ public class JobPlanetCrawlingService implements Tasklet {
         String originLink = null;
         String reviewScore = null;
         try {
-            List<WebElement> foundElements = driver.findElements(cssSelector(properties.getCompanyCardCss()));
-            for (WebElement foundElement : foundElements) {
-                WebElement link = foundElement.findElement(tagName("a"));
-                String companyName = link.getText();
-                if (company.isHighMatchName(companyName)) {
-                    originLink = link.getAttribute("href");
-                    reviewScore = foundElement.findElement(cssSelector(properties.getCompanyReviewScoreCss())).getText();
+            List<WebElement> elements = driver.findElements(cssSelector(properties.getCompanyCardCss()));
+            for (WebElement element : elements) {
+                if (element.findElement(className(properties.getCompanyCategoryCss())).getText().equals(properties.getCompanyCategoryLabel())) {
+                    originLink = element.findElement(tagName("a")).getAttribute("href");
+                    reviewScore = element.findElement(cssSelector(properties.getCompanyReviewScoreCss())).getText();
                     break;
                 }
             }
@@ -82,6 +79,7 @@ public class JobPlanetCrawlingService implements Tasklet {
         if (!hasText(reviewScore) || !hasText(originLink)) {
             return;
         }
+
         JobPlanetCompany jobPlanetCompany = JobPlanetCompany.builder()
                 .company(company)
                 .originLink(originLink)
