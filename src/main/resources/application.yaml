@@ -6,13 +6,13 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
   batch:
     jdbc:
-      initialize-schema: always
+      initialize-schema: never
     job:
       enabled: false
   jpa:
     database: mysql
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     show-sql: true
 crawling:
   driver-path: src\main\resources\chromedriver-win64\chromedriver.exe

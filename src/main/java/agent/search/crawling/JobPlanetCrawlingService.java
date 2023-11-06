@@ -67,7 +67,7 @@ public class JobPlanetCrawlingService implements Tasklet {
         try {
             List<WebElement> elements = driver.findElements(cssSelector(properties.getCompanyCardCss()));
             for (WebElement element : elements) {
-                if (element.findElement(className(properties.getCompanyCategoryCss())).getText().equals(properties.getCompanyCategoryLabel())) {
+                if (element.findElement(cssSelector(properties.getCompanyCategoryCss())).getText().equals(properties.getCompanyCategoryLabel())) {
                     originLink = element.findElement(tagName("a")).getAttribute("href");
                     reviewScore = element.findElement(cssSelector(properties.getCompanyReviewScoreCss())).getText();
                     break;
