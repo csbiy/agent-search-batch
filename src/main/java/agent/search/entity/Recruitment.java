@@ -19,6 +19,7 @@ public class Recruitment {
 
     private String jobPosition;
 
+    @Column(length = 2000)
     private String originLink;
 
     private String companyName;

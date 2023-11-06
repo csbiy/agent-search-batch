@@ -38,9 +38,6 @@ public class CrawlJobLauncher implements ApplicationRunner {
                 .addString("excelFileName", String.format(properties.getExcelFileName(), getCurrentDate()))
                 .toJobParameters();
         jobs.forEach((job) -> {
-            if (!job.getName().equals(JobPlanetCrawlJob.jobName)){
-                return;
-            }
             try {
                 jobLauncher.run(job, jobParameters);
             } catch (Exception e) {
