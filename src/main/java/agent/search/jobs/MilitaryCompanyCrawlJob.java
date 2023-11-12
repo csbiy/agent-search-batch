@@ -58,7 +58,8 @@ public class MilitaryCompanyCrawlJob {
     @StepScope
     public PoiItemReader<MilitaryCompany> excelReader(@Value("#{jobParameters['excelFileName']}") String excelFileName,
                                                       CrawlingProperties properties) {
-        String path = new StringBuilder().append(properties.getDownloadDirectory())
+        String path = new StringBuilder()
+                .append(properties.getDownloadDirectory())
                 .append("\\")
                 .append(excelFileName)
                 .toString();

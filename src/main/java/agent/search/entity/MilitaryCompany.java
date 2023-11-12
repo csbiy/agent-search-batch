@@ -79,8 +79,4 @@ public class MilitaryCompany {
         return name.replace("(주)","")
                 .replace("주식회사","");
     }
-
-    public boolean isHighMatchName(String text) {
-        return text.endsWith(getPureName());
-    }
 }

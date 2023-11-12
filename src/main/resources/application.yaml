@@ -6,14 +6,20 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
   batch:
     jdbc:
-      initialize-schema: never
+      initialize-schema: always
     job:
       enabled: false
   jpa:
     database: mysql
     hibernate:
       ddl-auto: none
+
     show-sql: true
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.binding: trace
+
 crawling:
   driver-path: src\main\resources\chromedriver-win64\chromedriver.exe
   download-directory: C:\Users\User\Desktop\search-batch\src\main\resources\crawling_result

@@ -2,6 +2,7 @@ package agent.search;
 
 import agent.search.crawling.JobPlanetCrawlingService;
 import agent.search.jobs.JobPlanetCrawlJob;
+import agent.search.jobs.MilitaryCompanyCrawlJob;
 import agent.search.properties.MilitaryExcelProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -36,6 +38,7 @@ public class CrawlJobLauncher implements ApplicationRunner {
     public void launchJobs() {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("excelFileName", String.format(properties.getExcelFileName(), getCurrentDate()))
+                .addString("randomParam",UUID.randomUUID().toString())
                 .toJobParameters();
         jobs.forEach((job) -> {
             try {
